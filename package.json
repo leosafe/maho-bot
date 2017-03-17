@@ -1,0 +1,16 @@
+{
+  "name": "maho-bot",
+  "version": "0.0.1",
+  "description": "Maho bot for discord",
+  "main": "bot.js",
+  "dependencies": {
+    "discordie": "^0.11.0",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "nodemon bot.js"
+  },
+  "author": "Leonardo Schenfeld",
+  "license": "ISC"
+}
