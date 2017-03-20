@@ -4,8 +4,14 @@
   "description": "Maho bot for discord",
   "main": "bot.js",
   "dependencies": {
-    "discordie": "^0.11.0",
-    "underscore": "^1.8.3"
+    "discord.io": "^2.5.1",
+    "fluent-ffmpeg": "^2.1.0",
+    "fs": "0.0.1-security",
+    "mp4-stream": "^2.0.2",
+    "request": "^2.81.0",
+    "underscore": "^1.8.3",
+    "youtube-dl": "^1.11.1",
+    "ytdl-core": "^0.10.0"
   },
   "devDependencies": {},
   "scripts": {

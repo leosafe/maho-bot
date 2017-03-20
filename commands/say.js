@@ -4,12 +4,17 @@ function say() {
     self = this;
     name = 'say';
 
-    this.main = function(e, date, message) {
+    this.main = function(bot, date, msg, channelID) {
         return new Promise((resolve, reject) => {
             let i = new Date();
             let now = i.getTime();
 
-            e.message.channel.sendMessage(message + ' `' + (now - date) + ' ms`');
+            let message = '```' + msg + '```';
+
+            bot.sendMessage({
+                to: channelID,
+                message: message
+            });
         });
     }
 
