@@ -12,7 +12,7 @@ let url = 'https://www.youtube.com/watch?v=-YCN-a0NsNk';
 function YoutubeSearch(searchKeywords, callback) {
     console.log(searchKeywords);
 
-    var requestUrl = 'https://www.googleapis.com/youtube/v3/search' + `?part=snippet&minResults=7&maxResults=7&q=${encodeURI(searchKeywords)}&key=AIzaSyBwJKRZxKPuPrXxu4kEEpOMf49Mr7qDU6M`;
+    var requestUrl = 'https://www.googleapis.com/youtube/v3/search' + `?part=snippet&minResults=6&maxResults=6&q=${encodeURI(searchKeywords)}&key=AIzaSyBwJKRZxKPuPrXxu4kEEpOMf49Mr7qDU6M`;
     console.log(requestUrl);
     let videos = [];
 
@@ -42,15 +42,73 @@ function YoutubeSearch(searchKeywords, callback) {
     });
 }
 
-function MahoResponse(videos) {
+this.createTempSong = function(id, callback) {
+
+    url = "https://www.youtube.com/watch?v=" + id;
+    info = { id: id };
+
+    video = youtubedl(url, ["--restrict-filenames", "-4"], {
+        cwd: __dirname,
+        maxBuffer: Infinity
+    });
+    video.on('error', function (err) {
+        console.log(err);
+    });
+    var filename = info.id + ".temp";
+    var stream = video.pipe(fs.createWriteStream('temp/' + filename));
+
+    video.on('info', function (info) {
+        console.log('Download started');
+        console.log('filename: ' + info._filename);
+        console.log('size: ' + info.size);
+        console.log('duration: ' + info.duration);
+    });
+
+    video.on('complete', function complete(info) {
+        console.log('filename: ' + info._filename + ' finished');
+        cb(null, info);
+    });
+
+    video.on('end', function () {
+        ffmpeg(fs.createReadStream('temp/' + filename)).output('./audio/' + info.id + '.mka').outputOptions(['-vn', '-acodec copy'])
+            .on('stderr', err => {
+
+            }).on('error', err => {
+            console.log(err);
+            return cb(err);
+        }).on('end', (stdout, stderr) => {
+            console.log('Finished Converting');
+            fs.unlink('temp/' + filename, function (err) {
+                if (err) return cb(err);
+                var song = {
+                    title: info.title,
+                    alt_title: info.alt_title,
+                    id: info.id,
+                    addedBy: self.userId,
+                    addedAt: Date.now(),
+                    duration: info.duration,
+                    type: "audio/mka",
+                    url: url,
+                    dl: "stream",
+                    dlBy: "main",
+                    cached: true,
+                    cachedAt: new Date(),
+                    path: `audio/${info.id}.mka`
+                }
+
+                if(typeof(callback) == 'function') {
+                    callback(song);
+                }
+            });
+        }).run();
+    });
 }
 
 function play() {
     self = this;
-    this.main = function(bot, date, msg, channelID, userObj) {
+    this.main = function(e, msg, _global) {
         return new Promise((resolve, reject) => {
-            let i = new Date();
-            let now = i.getTime();
+
             YoutubeSearch(msg, function(videos) {
                 let title = "```python";
                 for (var index = 0; index < videos.length; index++) {
@@ -59,13 +117,14 @@ function play() {
 
                 title += "```";
 
-                console.log(title);
 
-                 bot.sendMessage({
-                    to: channelID,
-                    message: title
-                });
+                _global.playLock = true;
+                _global.author = e.author.id;
+                e.channel.sendMessage(title);
+
             });
+
+
 
         });
     }
