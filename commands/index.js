@@ -5,6 +5,8 @@ var leave = require('./leave');
 var join = require('./join');
 var play = require('./play');
 var tyrant = require('./tyrant');
+var ursus = require('./ursus');
+var help = require('./help');
 
 module.exports = {
     ping: ping,
@@ -13,5 +15,7 @@ module.exports = {
     leave: leave,
     play: play,
     join: join,
-    tyrant: tyrant
+    tyrant: tyrant,
+    ursus: ursus,
+    help: help
 }

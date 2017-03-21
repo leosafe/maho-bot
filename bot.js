@@ -1,5 +1,7 @@
 const commands = require('./commands');
 const regex = /^maho./g;
+const mah = /maho/g;
+const mahg = /maho./g;
 const prefix = 'maho.';
 const Discord = require('discord.js');
 const bot = new Discord.Client();
@@ -9,21 +11,25 @@ _global = {
     playLock: false,
     author: '',
     options: 0,
+    ursus: false,
     tyrant : []
 }
 
 bot.login('MjkyNDA4NjkyNTcyMjkxMDcz.C63oDQ.p8Bc0Cg6XbMVXAoBPhDR1qpHCtI');
 
 bot.on('ready', function() {
-    console.log('Logged in as %s - %s\n', 'maho');
+    bot.user.setGame('maho.help');
 });
 
 bot.on('message', function(e) {
+
+    if(mah.test(e.content) && !mahg.test(e.content) && regex.test(e.content)) {
+        e.game("Falou em mim ? :3");
+    }
+
     let userID = e.author.id;
     let channelID = e.channel.id;
     let message = e.content;
-
-    console.log(_global);
 
     if(_global.playLock && regex.test(message) && e.author.id == _global.author) {
 
