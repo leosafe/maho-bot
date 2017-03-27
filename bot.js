@@ -4,6 +4,11 @@ const mah = /maho/g;
 const mahg = /maho./g;
 const prefix = 'maho.';
 const Discord = require('discord.js');
+
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/maho');
+const tyrant = require('./model/tyrant');
+
 const bot = new Discord.Client();
 const BrazilStory = '252966227486441472';
 
@@ -12,21 +17,23 @@ _global = {
     author: '',
     options: 0,
     ursus: false,
-    tyrant : []
+    tyrant : [],
+    bot: bot
 }
 
 bot.login('MjkyNDA4NjkyNTcyMjkxMDcz.C63oDQ.p8Bc0Cg6XbMVXAoBPhDR1qpHCtI');
 
 bot.on('ready', function() {
     bot.user.setGame('maho.help');
+    console.log('ready');
 });
 
 bot.on('message', function(e) {
 
-    if(mah.test(e.content) && !mahg.test(e.content) && regex.test(e.content)) {
+   /* if(mah.test(e.content) && !mahg.test(e.content) && regex.test(e.content)) {
         e.game("Falou em mim ? :3");
     }
-
+    */
     let userID = e.author.id;
     let channelID = e.channel.id;
     let message = e.content;
@@ -47,21 +54,10 @@ bot.on('message', function(e) {
     let command = split_message[0];
     let msg = prefix_split ? prefix_split.split(/ (.+)/)[1] : '';
 
+    console.log(_global.bot);
+    return false;
+
     if(regex.test(message) && typeof(commands[command]) == 'function') {
         commands[command]().main(e, msg, _global);
     }
 });
-
-const client = new Discord.Client();
-
-client.on('ready', () => {
-  console.log('I am ready!');
-});
-
-client.on('message', message => {
-  if (message.content === 'ping') {
-    message.reply('pong');
-  }
-});
-
-client.login('your token');

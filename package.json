@@ -4,9 +4,11 @@
   "description": "Maho bot for discord",
   "main": "bot.js",
   "dependencies": {
+    "api-ai-javascript": "^2.0.0-beta.14",
     "discord.io": "^2.5.1",
     "fluent-ffmpeg": "^2.1.0",
     "fs": "0.0.1-security",
+    "mongoose": "^4.9.1",
     "mp4-stream": "^2.0.2",
     "node-opus": "^0.2.4",
     "request": "^2.81.0",
