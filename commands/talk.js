@@ -2,9 +2,6 @@ var _ = require('underscore');
 var fs = require('fs');
 var apiai = require('apiai');
 
-
-
-
 function talk() {
     self = this;
 
