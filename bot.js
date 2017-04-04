@@ -35,6 +35,7 @@ bot.on('message', function(e) {
     let split_message = prefix_split ? prefix_split.split(' ') : '';
     let command = split_message[0];
     let msg = prefix_split ? prefix_split.split(/ (.+)/)[1] : '';
+    msg = (typeof(msg) == 'undefined') ? 'mensagem inválida' : msg;
 
     if(regex.test(message) && typeof(commands[command]) == 'function') {
         commands[command]().main(e, msg, _global);

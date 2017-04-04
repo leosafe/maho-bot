@@ -8,6 +8,7 @@ function say() {
         return new Promise((resolve, reject) => {
             let i = new Date();
             let now = i.getTime();
+            console.log(msg);
 
             let message = '```' + msg + '```';
 
