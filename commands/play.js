@@ -109,10 +109,13 @@ function play() {
     this.main = function(e, msg, _global) {
         return new Promise((resolve, reject) => {
 
+            if(!_global.playLock) {
             YoutubeSearch(msg, function(videos) {
                 let title = "```python";
                 for (var index = 0; index < videos.length; index++) {
-                    title += "\n " + (index + 1) + ". " + videos[index].title;
+                    let t = videos[index].title;
+
+                    title += "\n " + (index + 1) + ". " + t.replace(/"|'/g, '');
                 }
 
                 title += "```";
@@ -120,11 +123,88 @@ function play() {
 
                 _global.playLock = true;
                 _global.author = e.author.id;
+                _global.videos = videos;
                 e.channel.sendMessage(title);
 
             });
+        } else {
 
+                if(typeof(parseInt(msg)) != 'number' || !parseInt(msg) || parseInt(msg) > _global.videos.length) {
+                    e.channel.sendMessage('``` A opção escolhida é inválida, escolha um número de 1 até ' + _global.videos.length + ' ```');
+                    return false;
+                }
 
+                msg = msg <= 0 ? 0 : msg - 1;
+
+                let musicId = _global.videos[msg].id;
+                
+                let msay = "```python";
+                msay += '\n Playing: "' + _global.videos[msg].title + '"';
+                msay += '```';   
+
+                e.channel.sendMessage(msay);
+                
+                _global.playLock = false;
+                _global.videos = [];
+                
+            
+                let voiceChannelID = e.member.voiceChannelID;
+                let voiceChannel = e.member.voiceChannel;
+                const streamOptions = { seek : 0, volume : 1}
+                self.userId = e.author.id;
+
+                voiceChannel.join()
+                .then(function(connection)
+                {
+                    const stream = ytdl('https://www.youtube.com/watch?v='+musicId, {filter : 'audioonly', begin : 147456});
+                    let dispatcher = connection.playStream(stream, streamOptions);
+                    /*
+
+                    stream.on('progress', function(chunkLength, downloaded, total) {
+                        process.stdout.cursorTo(0);
+                        process.stdout.clearLine(1);
+                        process.stdout.write((downloaded / total * 100).toFixed(2) + '%');
+                        console.log((downloaded / total * 100).toFixed(2) + '%');
+                    });
+
+                    stream.on('end', function() {
+                        process.stdout.write('\n');
+                        console.log('end');
+                    });
+
+                    stream.on('response', function(res) {
+                        size = res.headers['content-length'];
+                        console.log('size', size);
+                    });
+                    
+                    var dataEmitted = 0;
+                    stream.on('data', function(chunk) {
+                        dataEmitted += chunk.length;
+                        //console.log('on data', chunk.length, dataEmitted);
+                    });
+
+                    
+                    stream.on('end', function() {
+                        console.log('emitted', dataEmitted);
+                    });
+                    */
+
+                    connection.on('error', (err) =>
+                    {
+                        console.log("err : ", err);
+                    });
+                    connection.on('disconnected', (err) =>
+                    {
+                        console.log("err : ", err);
+                    });
+                })
+                .catch(function(e)
+                {
+                    console.log("err : ",e);
+                });
+
+                
+            }
 
         });
     }

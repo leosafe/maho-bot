@@ -5,12 +5,47 @@ function ping() {
 
     this.main = function(e, date, msg, channelID, userObj) {
         return new Promise((resolve, reject) => {
-            let i = new Date();
-            let now = i.getTime();
+            var ping = require('net-ping');
+            var session = ping.createSession ();
+            let targets = ['8.31.99.161','10.82.61.137','10.82.61.137:6071'];
 
-            let message = "```pong!```";
+            message = '```Reboot Channels: \n';
 
-            e.channel.sendMessage(message);
+            let aux = 0;
+
+           // e.channel.sendMessage('``` Requesting... ```');
+
+            for (i = 0; i < targets.length ; i++) {
+                session.pingHost (targets[i], function (error, target, sent, rcvd) {
+                let ms = rcvd - sent;
+                aux++;
+                
+                if (error) {
+                    message += 'CH ' + (targets.indexOf(target) + 1) + ': Offline (timed out) ('+target+') \n';
+                }
+                else {
+                    message += 'CH ' + (targets.indexOf(target) + 1) + ': Online  (' + ms + ' ms) ('+target+')';
+                }
+
+               });
+            }
+
+          /*  interval = setInterval(function() {
+                if(aux == targets.length) {
+                   message += '```';
+                   e.channel.sendMessage(message);
+                   clearInterval(interval);
+                }
+            }, 500)
+
+            */
+
+            m = '```pong!```';
+
+            e.channel.sendMessage(m);
+
+            
+
         });
     }
 

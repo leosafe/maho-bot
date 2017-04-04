@@ -13,13 +13,36 @@ function fanfare() {
     this.main = function(bot, date, msg, channelID, userObj) {
         return new Promise((resolve, reject) => {
 
-            let voiceChannelID = userObj.voice_channel_id;
-            self.userId = userObj.id;
-            if(voiceChannelID) {
+            let voiceChannelID = bot.member.voiceChannelID;
+            let voiceChannel = bot.member.voiceChannel;
+            const streamOptions = { seek : 0, volume : 1}
+            self.userId = bot.author.id;
 
-               console.log(bot.servers['252966227486441472'].channels[voiceChannelID]);
+            voiceChannel.join()
+            .then(function(connection)
+            {
+                const stream = ytdl('https://www.youtube.com/watch?v=SsWyjrQsTis', {filter : 'audioonly'});
+                const dispatcher = connection.playStream(stream, streamOptions);
 
-            }
+                // ytdl.getInfo('https://www.youtube.com/watch?v=kfoJUeyMsOE',['-q', '--no-warnings', '--force-ipv4'], function(err,video)
+                // {
+                //     connection.playStream(request(video.url));
+                // });
+
+                connection.on('error', (err) =>
+                {
+                    console.log("err : ", err);
+                });
+                connection.on('disconnected', (err) =>
+                {
+                    console.log("err : ", err);
+                });
+            })
+            .catch(function(e)
+            {
+                console.log("err : ",e);
+            });
+
         });
     }
 

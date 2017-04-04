@@ -11,11 +11,12 @@
     "fs": "0.0.1-security",
     "mongoose": "^4.9.1",
     "mp4-stream": "^2.0.2",
+    "net-ping": "^1.2.0",
     "node-opus": "^0.2.4",
     "request": "^2.81.0",
     "underscore": "^1.8.3",
     "youtube-dl": "^1.11.1",
-    "ytdl-core": "^0.10.0"
+    "ytdl-core": "^0.11.0"
   },
   "devDependencies": {},
   "scripts": {

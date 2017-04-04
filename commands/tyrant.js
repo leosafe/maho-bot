@@ -34,7 +34,7 @@ function tyrant() {
         m+= '\n Total gasto em mesos: ' + player.mesos;
 
         return m;
-    }
+    };
 
     this.reset = function(rates, player, mpertry, username) {
         m = '```python';
@@ -46,7 +46,7 @@ function tyrant() {
         m += '\n Digite "maho.tyrant enhance" para tentar a sorte';
 
         return m;
-    }
+    };
     
     this.greetings = function(username, player) {
         m  = "```python";
@@ -54,14 +54,14 @@ function tyrant() {
         m += "\n Sua tyrant está atualmente com " + player.level + " stars";
         m += '\n Digite "maho.tyrant enhance" para tentar a sorte';
         m += '\n Você pode resetar para level 0 a sua tyrant \n usando "maho.tyrant reset"';
-    }
+    };
 
     this.main = function(e, msg, _global) {
         return new Promise((resolve, reject) => {
             let mpertry = 55832200;
             let rates = require ('../rates.json');
             let userID = e.author.id;
-            let playerObj = _global.tyrant.filter(function(i) { console.log(i); return i[userID]});
+            let playerObj = _global.tyrant.filter(function(i) { return i[userID]});
 
             if(!playerObj.length) {
                 var key = userID;
@@ -74,7 +74,7 @@ function tyrant() {
                 _global.tyrant.push(obj);
             }
 
-            playerObj = _global.tyrant.filter(function(i) { console.log(i); return i[userID]});
+            playerObj = _global.tyrant.filter(function(i) { return i[userID]});
 
             if(msg && typeof(self[msg]) == 'function') {
                 let m = self[msg](rates, playerObj[0][userID], mpertry, e.author.username);
@@ -87,7 +87,7 @@ function tyrant() {
             e.channel.sendMessage(m);
 
         });
-    }
+    };
 
     return this;
 }

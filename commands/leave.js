@@ -1,7 +1,6 @@
 var _ = require('underscore');
 var fs = require('fs');
 
-
 function leave() {
     self = this;
 
@@ -9,9 +8,10 @@ function leave() {
         return new Promise((resolve, reject) => {
 
             const channel = e.member.voiceChannel;
-            e.channel.sendMessage('``` Leaving! ```');
+            console.log(channel);
             channel.leave();
-
+            e.channel.sendMessage('``` Leaving! ```');
+            
         });
     }
 

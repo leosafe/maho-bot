@@ -26,7 +26,6 @@ bot.login('MjkyNDA4NjkyNTcyMjkxMDcz.C63oDQ.p8Bc0Cg6XbMVXAoBPhDR1qpHCtI');
 bot.on('ready', function() {
     bot.user.setGame('maho.help');
 });
-
 bot.on('message', function(e) {
 
     let userID = e.author.id;

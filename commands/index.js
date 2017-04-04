@@ -9,6 +9,7 @@ var ursus = require('./ursus');
 var help = require('./help');
 var talk = require('./talk');
 var sayc = require('./sayc');
+var roll = require('./roll');
 
 module.exports = {
     ping: ping,
@@ -21,5 +22,6 @@ module.exports = {
     tyrant: tyrant,
     ursus: ursus,
     help: help,
-    talk: talk
+    talk: talk,
+    roll: roll,
 }
